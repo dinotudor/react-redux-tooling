@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { incremented, amountAdded, decrementOne, amountDecremented, reset } from './feature/counter/counterSlice'
 import { useFetchBreedsQuery } from './feature/dogs/dogsApiSlice'
@@ -9,7 +10,8 @@ function App() {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
 
-  const { data = [], isFetching } = useFetchBreedsQuery();
+  const [numDogs, setNumDogs] = useState(10);
+  const { data = [], isFetching } = useFetchBreedsQuery(numDogs);
 
   const oneClick = () => {
     dispatch(incremented());
@@ -58,8 +60,18 @@ function App() {
           <p>count is: {count}</p>
         </section>
         <section>
-          <h1>Fetch Dogos</h1>
+          <h2>Fetch Dogos</h2>
+          <div>
+            <h3>How many dog would you like be displayed?</h3>
+            <select value={numDogs} onChange={(e) => setNumDogs(Number(e.target.value)) }>
+             <option value="5">5</option>
+             <option value="10">10</option>
+             <option value="15">15</option>
+             <option value="20">20</option>
+            </select>
+          </div>
           Number of dogs fetched: {data.length}
+
           <table>
             <thead>
               <tr>
